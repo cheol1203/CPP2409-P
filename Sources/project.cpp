@@ -28,7 +28,7 @@ string decryptCaesar(const string &text, int shift){
 
 int main(){
     int mode;
-    cout << "모드를 선택하세요 (1: 암호화, 2: 복호화, 3: 암호화된 텍스트 추가 저장): ";
+    cout << "모드를 선택하세요 (1: 암호화, 2: 복호화, 3: 암호화된 텍스트 추가 저장, 4: 모든 텍스트 복호화): ";
     cin >> mode;
     cin.ignore(); // 입력 버퍼 비우기
 
@@ -94,6 +94,26 @@ int main(){
         }
         else{
             cout << "파일을 열 수 없습니다." << endl;
+        }
+    }
+    
+    else if (mode == 4) {
+        // 모든 텍스트 복호화 모드
+        int shift;
+        cout << "복호화할 시프트 값을 입력하세요 (1~25): ";
+        cin >> shift;
+
+        // 파일에서 모든 줄 읽기 및 복호화
+        ifstream inFile("encrypted.txt");
+        if (inFile.is_open()) {
+            string encryptedText;
+            while (getline(inFile, encryptedText)) {
+                string decryptedText = decryptCaesar(encryptedText, shift);
+                cout << "복호화된 텍스트: " << decryptedText << endl;
+            }
+            inFile.close();
+        } else {
+            cout << "파일을 읽을 수 없습니다." << endl;
         }
     }
     else{
