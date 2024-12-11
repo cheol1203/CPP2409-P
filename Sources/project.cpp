@@ -14,6 +14,7 @@ using namespace std;
 // 암호화/복호화 및 파일 관리 클래스
 class CaesarCipher {
 private:
+    string password;
     
     // 시저 암호로 텍스트를 암호화하는 함수
     string EncryptCaesar(const string &text, int shift){
@@ -33,6 +34,30 @@ private:
     }
 
 public:
+    // 비밀번호 설정 함수
+    void SetPassword() {
+        cout << "새 비밀번호를 설정하세요: ";
+        getline(cin, password);
+        cout << "비밀번호가 설정되었습니다." << endl;
+    }
+
+    // 비밀번호 확인 함수
+    bool VerifyPassword() {
+        if (password.empty()) return true; // 비밀번호가 설정되지 않은 경우 바로 접근
+
+        string entered_password;
+        cout << "비밀번호를 입력하세요: ";
+        getline(cin, entered_password);
+
+        if (entered_password == password) {
+            cout << "비밀번호가 확인되었습니다." << endl;
+            return true;
+        } else {
+            cout << "비밀번호가 일치하지 않습니다!" << endl;
+            return false;
+        }
+    }
+    
     // 암호화된 텍스트를 파일에 저장(단, 덮어쓰기 됨)
     void EncryptedText(){
         string text, shift_input;
@@ -127,7 +152,8 @@ int main() {
         cout << "1. 암호화된 텍스트 저장(덮어쓰기)" << endl;
         cout << "2. 암호화된 텍스트 추가 저장" << endl;
         cout << "3. 암호화된 텍스트 랜덤 강도로 저장" << endl;
-        cout << "4. 암호화된 파일 읽기 및 복호화" << endl;
+        cout << "4. 비밀번호 설정" << endl;
+        cout << "5. 암호화된 파일 읽기 및 복호화" << endl;
         cout << "0. 종료" << endl;
         cout << "선택: ";
         getline(cin, choice_input);
@@ -135,16 +161,19 @@ int main() {
         int choice = stoi(choice_input); // 문자열을 정수로 변환
         switch (choice) {
         case 1:
-            cipher.EncryptedText();
+            if (cipher.VerifyPassword()) cipher.EncryptedText();
             break;
         case 2:
-            cipher.AddEncryptedText();
+            if (cipher.VerifyPassword()) cipher.AddEncryptedText();
             break;
         case 3:
-            cipher.RandomEncryptText();
+            if (cipher.VerifyPassword()) cipher.RandomEncryptText();
             break;
         case 4:
-            cipher.DecryptFile();
+            if (cipher.VerifyPassword()) cipher.SetPassword();
+            break;
+        case 5:
+            if (cipher.VerifyPassword()) cipher.DecryptFile();
             break;
         case 0:
             cout << "프로그램을 종료합니다." << endl;
