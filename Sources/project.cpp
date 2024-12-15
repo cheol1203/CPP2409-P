@@ -121,7 +121,16 @@ public:
         }
     }
     
-    // 복호화
+    // 파일 삭제 함수
+    void DeleteEncryptedFile() {
+        if (remove("encrypted.txt") == 0) {
+            cout << "파일이 삭제되었습니다." << endl;
+        } else {
+            cout << "파일을 삭제할 수 없습니다." << endl;
+        }
+    }
+
+    // 복호화 함수
     void DecryptFile() {
         ifstream in_file("encrypted.txt");
         if (in_file.is_open()) {
@@ -152,8 +161,9 @@ int main() {
         cout << "1. 암호화된 텍스트 저장(덮어쓰기)" << endl;
         cout << "2. 암호화된 텍스트 추가 저장" << endl;
         cout << "3. 암호화된 텍스트 랜덤 강도로 저장" << endl;
-        cout << "4. 비밀번호 설정" << endl;
-        cout << "5. 암호화된 파일 읽기 및 복호화" << endl;
+        cout << "4. 암호화된 파일 삭제" << endl;
+        cout << "5. 비밀번호 설정" << endl;
+        cout << "6. 암호화된 파일 읽기 및 복호화" << endl;
         cout << "0. 종료" << endl;
         cout << "선택: ";
         getline(cin, choice_input);
@@ -170,9 +180,12 @@ int main() {
             if (cipher.VerifyPassword()) cipher.RandomEncryptText();
             break;
         case 4:
-            if (cipher.VerifyPassword()) cipher.SetPassword();
+            if (cipher.VerifyPassword()) cipher.DeleteEncryptedFile();
             break;
         case 5:
+            if (cipher.VerifyPassword()) cipher.SetPassword();
+            break;
+        case 6:
             if (cipher.VerifyPassword()) cipher.DecryptFile();
             break;
         case 0:
